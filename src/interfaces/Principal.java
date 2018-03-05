@@ -17,7 +17,7 @@ import javax.swing.JLabel;
  */
 public class Principal extends javax.swing.JDialog {
 
-    AreaMovimiento am = new AreaMovimiento(this.lives);
+    AreaMovimiento am = new AreaMovimiento(this);
     /**
      * Creates new form Principal
      */

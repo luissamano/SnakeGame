@@ -37,8 +37,8 @@ public final class AreaMovimiento extends JPanel implements Runnable {
     boolean inicio = true;
     String direccion = "abajo";
     Point coordenada = new Point();
-    Point num = new Point();
-    Point temp = new Point();
+    int Numbers = 1;
+    Principal p;
 
     Image avion;
 
@@ -54,9 +54,9 @@ public final class AreaMovimiento extends JPanel implements Runnable {
     Thread proceso = new Thread(this);
     JLabel lives;
 
-    public AreaMovimiento(JLabel lives) {
+    public AreaMovimiento(Principal p) {
         this.iniciarProceso();
-        this.lives = lives;
+        this.p = p;
     }
 
     public int getVelocidad() {
@@ -88,17 +88,19 @@ public final class AreaMovimiento extends JPanel implements Runnable {
 
             avion = new ImageIcon(getClass().getResource("/img/abajo.png")).getImage()
                     .getScaledInstance(10, -1, Image.SCALE_DEFAULT);
+            
+            this.inicio = false;
+            
         }
 
-        //g.fillOval(coorX, coorY, 10, 10);
-        //g.drawImage(this.figura, coorX, coorY, this);
-        //g.drawImage(this.coordenada.x, this.coordenada.y, 10, 10);
         g.fillOval(this.coordenada.x, this.coordenada.y, 10, 10);
-        g.drawString("9", coorX, coorY);
+        g.drawString(""+Numbers, coorX, coorY);
 
         if (coordenada.x <= -14 || coordenada.y <= -14 || coordenada.x >= 492 || coordenada.y >= 448) {
-            vidas = vidas - 1;
             Metodo();
+            vidas = vidas - 1;
+            Numbers++;
+            p.lives.setText(""+vidas);
         }
     }
 
@@ -133,7 +135,6 @@ public final class AreaMovimiento extends JPanel implements Runnable {
         coorY = Aleatorio();
         this.coordenada.x = this.getSize().width / 2;
         this.coordenada.y = this.getSize().height / 2;
-        this.inicio = false;
     }
 
     public int Aleatorio() {
