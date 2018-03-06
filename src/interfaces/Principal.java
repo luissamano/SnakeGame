@@ -5,9 +5,12 @@
  */
 package interfaces;
 
+import Helpers.Relog;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -18,15 +21,22 @@ import javax.swing.JLabel;
 public class Principal extends javax.swing.JDialog {
 
     AreaMovimiento am = new AreaMovimiento(this);
+    Relog r = new Relog(this);
     /**
      * Creates new form Principal
      */
     public Principal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();
-        this.add(am, BorderLayout.CENTER);
-        int x = this.am.vidas;
-        lives.setText(""+x);
+        
+        try {
+            initComponents();
+            this.add(am, BorderLayout.CENTER);
+            r.Start(60);
+            int x = this.am.vidas;
+            lives.setText(""+x);            
+        } catch (Exception ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public JLabel getLives() {
@@ -55,6 +65,8 @@ public class Principal extends javax.swing.JDialog {
         btnReiniciar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         lives = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        time = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -107,21 +119,28 @@ public class Principal extends javax.swing.JDialog {
                 sldVelocidadStateChanged(evt);
             }
         });
-        jPanel1.add(sldVelocidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 30, 210, -1));
+        jPanel1.add(sldVelocidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, 210, -1));
 
         btnReiniciar.setText("Reiniciar");
-        jPanel1.add(btnReiniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 60, -1, -1));
+        jPanel1.add(btnReiniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 60, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel1.setText("Lives:");
+        jLabel1.setText("Vidas:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 20, -1, -1));
 
         lives.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel1.add(lives, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 20, -1, -1));
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setText("Tiempo:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 60, -1, -1));
+
+        time.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jPanel1.add(time, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 50, 30, 30));
+
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_END);
 
-        setBounds(0, 0, 499, 574);
+        setBounds(0, 0, 499, 593);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnArribaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArribaActionPerformed
@@ -201,8 +220,10 @@ public class Principal extends javax.swing.JDialog {
     private javax.swing.JButton btnIzq;
     private javax.swing.JButton btnReiniciar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     public javax.swing.JLabel lives;
     private javax.swing.JSlider sldVelocidad;
+    public javax.swing.JLabel time;
     // End of variables declaration//GEN-END:variables
 }

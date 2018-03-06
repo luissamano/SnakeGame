@@ -5,7 +5,7 @@
  */
 package interfaces;
 
-import Objects.Variables;
+import Helpers.Relog;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Label;
@@ -41,6 +41,7 @@ public final class AreaMovimiento extends JPanel implements Runnable {
     Principal p;
 
     Image avion;
+    
 
     public Image getAvion() {
         return avion;
@@ -77,6 +78,7 @@ public final class AreaMovimiento extends JPanel implements Runnable {
 
     public void iniciarProceso() {
         this.proceso.start();
+        
     }
 
     @Override
@@ -85,7 +87,6 @@ public final class AreaMovimiento extends JPanel implements Runnable {
 
         if (this.inicio) {
             Metodo();
-
             avion = new ImageIcon(getClass().getResource("/img/abajo.png")).getImage()
                     .getScaledInstance(10, -1, Image.SCALE_DEFAULT);
             
@@ -99,8 +100,13 @@ public final class AreaMovimiento extends JPanel implements Runnable {
         if (coordenada.x <= -14 || coordenada.y <= -14 || coordenada.x >= 492 || coordenada.y >= 448) {
             Metodo();
             vidas = vidas - 1;
-            Numbers++;
             p.lives.setText(""+vidas);
+        }
+        
+        if (this.coordenada.x == coorX || this.coordenada.y == coorY) {
+            Numbers++;
+            CoorNums();
+            g.drawString(""+Numbers, coorX, coorY);
         }
     }
 
@@ -131,13 +137,19 @@ public final class AreaMovimiento extends JPanel implements Runnable {
     }
 
     public void Metodo() {
-        coorX = Aleatorio();
-        coorY = Aleatorio();
+        CoorNums();
         this.coordenada.x = this.getSize().width / 2;
         this.coordenada.y = this.getSize().height / 2;
+    }
+    
+    public void CoorNums(){
+        coorX = Aleatorio();
+        coorY = Aleatorio();
     }
 
     public int Aleatorio() {
         return (-14 + (int) (Math.random() * 491));
     }
+    
+    
 }
