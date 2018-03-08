@@ -5,7 +5,7 @@
  */
 package interfaces;
 
-import Helpers.Relog;
+import Helpers.Tiempo;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.util.Set;
@@ -21,7 +21,7 @@ import javax.swing.JLabel;
 public class Principal extends javax.swing.JDialog {
 
     AreaMovimiento am = new AreaMovimiento(this);
-    Relog r = new Relog(this);
+    Tiempo tmp = new Tiempo(am,this);
     /**
      * Creates new form Principal
      */
@@ -31,20 +31,12 @@ public class Principal extends javax.swing.JDialog {
         try {
             initComponents();
             this.add(am, BorderLayout.CENTER);
-            r.Start(60);
+            tmp.iniciarProceso();
             int x = this.am.vidas;
             lives.setText(""+x);            
         } catch (Exception ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public JLabel getLives() {
-        return lives;
-    }
-
-    public void setLives(JLabel lives) {
-        this.lives = lives;
     }
 
     /**
@@ -122,6 +114,11 @@ public class Principal extends javax.swing.JDialog {
         jPanel1.add(sldVelocidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, 210, -1));
 
         btnReiniciar.setText("Reiniciar");
+        btnReiniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReiniciarActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnReiniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 60, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -146,21 +143,29 @@ public class Principal extends javax.swing.JDialog {
     private void btnArribaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArribaActionPerformed
         // TODO add your handling code here:
         this.am.setDireccion("arriba");   
+        this.am.avion = new ImageIcon(getClass().getResource("/img/arriba.png")).getImage()
+                    .getScaledInstance(100, -100, Image.SCALE_DEFAULT);
     }//GEN-LAST:event_btnArribaActionPerformed
 
     private void btnAbajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbajoActionPerformed
         // TODO add your handling code here:
         this.am.setDireccion("abajo");
+        this.am.avion = new ImageIcon(getClass().getResource("/img/abajo.png")).getImage()
+                    .getScaledInstance(100, -100, Image.SCALE_DEFAULT);
     }//GEN-LAST:event_btnAbajoActionPerformed
 
     private void btnDerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDerActionPerformed
         // TODO add your handling code here:
         this.am.setDireccion("derecha");
+        this.am.avion = new ImageIcon(getClass().getResource("/img/der.png")).getImage()
+                    .getScaledInstance(100, -100, Image.SCALE_DEFAULT);
     }//GEN-LAST:event_btnDerActionPerformed
 
     private void btnIzqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzqActionPerformed
         // TODO add your handling code here:
         this.am.setDireccion("izqierda");  
+        this.am.avion = new ImageIcon(getClass().getResource("/img/izq.png")).getImage()
+                    .getScaledInstance(100, -100, Image.SCALE_DEFAULT);
     }//GEN-LAST:event_btnIzqActionPerformed
 
     private void sldVelocidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sldVelocidadStateChanged
@@ -170,6 +175,12 @@ public class Principal extends javax.swing.JDialog {
         vel = (vel == 0 ? 50: vel);
         this.am.setVelocidad(vel);
     }//GEN-LAST:event_sldVelocidadStateChanged
+
+    private void btnReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReiniciarActionPerformed
+        // TODO add your handling code here:
+        //am.iniciarProceso();
+        //tmp.reiniciarProceso();
+    }//GEN-LAST:event_btnReiniciarActionPerformed
 
     /**
      * @param args the command line arguments
