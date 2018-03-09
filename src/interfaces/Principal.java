@@ -5,12 +5,18 @@
  */
 package interfaces;
 
+import Helpers.Audio;
 import Helpers.Tiempo;
+import POO.VarCoordenadas;
 import java.awt.BorderLayout;
 import java.awt.Image;
+import java.io.File;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -20,20 +26,21 @@ import javax.swing.JLabel;
  */
 public class Principal extends javax.swing.JDialog {
 
+    VarCoordenadas VarCoor = new VarCoordenadas();
     AreaMovimiento am = new AreaMovimiento(this);
-    Tiempo tmp = new Tiempo(am,this);
+    Tiempo tmp = new Tiempo(am, this);
+
     /**
      * Creates new form Principal
      */
     public Principal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        
+
         try {
             initComponents();
             this.add(am, BorderLayout.CENTER);
             tmp.iniciarProceso();
-            int x = this.am.vidas;
-            lives.setText(""+x);            
+            lives.setText("" + this.am.vidas);
         } catch (Exception ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -142,37 +149,37 @@ public class Principal extends javax.swing.JDialog {
 
     private void btnArribaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArribaActionPerformed
         // TODO add your handling code here:
-        this.am.setDireccion("arriba");   
+        this.am.setDireccion("arriba");
         this.am.avion = new ImageIcon(getClass().getResource("/img/arriba.png")).getImage()
-                    .getScaledInstance(100, -100, Image.SCALE_DEFAULT);
+                .getScaledInstance(80, 70, Image.SCALE_DEFAULT);
     }//GEN-LAST:event_btnArribaActionPerformed
 
     private void btnAbajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbajoActionPerformed
         // TODO add your handling code here:
         this.am.setDireccion("abajo");
         this.am.avion = new ImageIcon(getClass().getResource("/img/abajo.png")).getImage()
-                    .getScaledInstance(100, -100, Image.SCALE_DEFAULT);
+                .getScaledInstance(80, 70, Image.SCALE_DEFAULT);
     }//GEN-LAST:event_btnAbajoActionPerformed
 
     private void btnDerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDerActionPerformed
         // TODO add your handling code here:
         this.am.setDireccion("derecha");
         this.am.avion = new ImageIcon(getClass().getResource("/img/der.png")).getImage()
-                    .getScaledInstance(100, -100, Image.SCALE_DEFAULT);
+                .getScaledInstance(80, 70, Image.SCALE_DEFAULT);
     }//GEN-LAST:event_btnDerActionPerformed
 
     private void btnIzqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzqActionPerformed
         // TODO add your handling code here:
-        this.am.setDireccion("izqierda");  
+        this.am.setDireccion("izqierda");
         this.am.avion = new ImageIcon(getClass().getResource("/img/izq.png")).getImage()
-                    .getScaledInstance(100, -100, Image.SCALE_DEFAULT);
+                .getScaledInstance(80, 70, Image.SCALE_DEFAULT);
     }//GEN-LAST:event_btnIzqActionPerformed
 
     private void sldVelocidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sldVelocidadStateChanged
         // TODO add your handling code here:
         int vel = 1000 - this.sldVelocidad.getValue() * 100;
-        
-        vel = (vel == 0 ? 50: vel);
+
+        vel = (vel == 0 ? 50 : vel);
         this.am.setVelocidad(vel);
     }//GEN-LAST:event_sldVelocidadStateChanged
 
@@ -216,7 +223,7 @@ public class Principal extends javax.swing.JDialog {
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
+                        System.exit(0);                        
                     }
                 });
                 dialog.setVisible(true);

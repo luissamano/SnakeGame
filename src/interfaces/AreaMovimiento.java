@@ -5,26 +5,15 @@
  */
 package interfaces;
 
+import Helpers.Audio;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Label;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
-import javax.accessibility.AccessibleContext;
-import javax.imageio.ImageIO;
-import javax.naming.Context;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 /**
  *
@@ -32,40 +21,39 @@ import javax.swing.Timer;
  */
 public final class AreaMovimiento extends JPanel implements Runnable {
 
-    int vidas = 3;
+    int vidas;
     int cambio = 10;
+    int Numbers = 1;
     int coorX, tempX;
     int coorY, tempY;
     int velocidad = 1000;
     boolean inicio = true;
     String direccion = "abajo";
     Point coordenada = new Point();
-    int Numbers = 8;
-    Thread proceso = new Thread(this);
-    
-    Principal p;
 
+    Thread proceso = new Thread(this);
+
+    Principal p;
     AreaMovimiento am;
 
     Image avion;
-    
-    public void setVidas(int vidas) {
-        this.vidas = vidas;
-        Numbers = 9;
+
+    public AreaMovimiento(Principal p) {
+        this.iniciarProceso();
+        this.p = p;
+
+    }
+
+    public AreaMovimiento() {
+
     }
 
     public int getVidas() {
         return vidas;
     }
-    
-    public AreaMovimiento(Principal p) {
-        this.iniciarProceso();
-        this.p = p;
-        
-    }
-    
-    public AreaMovimiento() {
-        
+
+    public void setVidas(int vidas) {
+        this.vidas = vidas;
     }
 
     public int getVelocidad() {
@@ -83,19 +71,32 @@ public final class AreaMovimiento extends JPanel implements Runnable {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
-    
-    
-    public void setAvion(Image avion) {
-        this.avion = avion;
-    }
 
     public void iniciarProceso() {
-        this.proceso.start();
+        vidas = 3;
         //this.p.r.Start(60);
         avion = new ImageIcon(getClass().getResource("/img/abajo.png")).getImage()
-                    .getScaledInstance(100, -100, Image.SCALE_DEFAULT);
+                .getScaledInstance(80, 70, Image.SCALE_SMOOTH);
+
+        this.proceso.start();
+
     }
-    
+
+    public void terminarProceso() {
+        vidas = 0;
+        Numbers = 9;
+        p.lives.setText("" + vidas);
+        this.coordenada.x = this.getSize().width / 2;
+        this.coordenada.y = this.getSize().height / 2;
+        inicio = true;
+        int des = (int) JOptionPane.showConfirmDialog(null, "¿Volver a jugar?", "Fin del juego", WIDTH);
+        if (des == 1) {
+            this.proceso.stop();
+            iniciarProceso();
+        } else {
+            this.proceso.stop();
+        }
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -105,44 +106,43 @@ public final class AreaMovimiento extends JPanel implements Runnable {
             Metodo();
             this.inicio = false;
         }
-        
+
         g.drawImage(this.avion, this.coordenada.x, this.coordenada.y, this);
         //g.fillOval(this.coordenada.x, this.coordenada.y, 10, 10);
         g.setColor(Color.RED);
         g.setFont(new Font("Courier New", 1, 17));
-        g.drawString(""+Numbers, coorX, coorY);
-        
-        
-        
+        g.drawString("" + Numbers, coorX, coorY);
 
         if (coordenada.x <= -14 || coordenada.y <= -14 || coordenada.x >= 492 || coordenada.y >= 448) {
             Metodo();
             vidas = vidas - 1;
-            p.lives.setText(""+vidas);
+            p.lives.setText("" + vidas);
         }
-        
-        
-        if (this.coordenada.x == this.coorX || this.coordenada.y == this.coorY ||
-                this.coordenada.x+1 == this.coorX || this.coordenada.x+1 == this.coorX ||
-                this.coordenada.x-1 == this.coorX || this.coordenada.x-1 == this.coorX ||
-                this.coordenada.x+2 == this.coorX || this.coordenada.x+2 == this.coorX ||
-                this.coordenada.x-2 == this.coorX || this.coordenada.x-2 == this.coorX ||
-                this.coordenada.x+3 == this.coorX || this.coordenada.x+3 == this.coorX ||
-                this.coordenada.x-3 == this.coorX || this.coordenada.x-3 == this.coorX ||
-                this.coordenada.x+4 == this.coorX || this.coordenada.x+4 == this.coorX ||
-                this.coordenada.x-4 == this.coorX || this.coordenada.x-4 == this.coorX ||
-                this.coordenada.x+5 == this.coorX || this.coordenada.x+5 == this.coorX ||
-                this.coordenada.x-5 == this.coorX || this.coordenada.x-5 == this.coorX) 
-        {            
-            if (Numbers <= 9 ) {
-                CoorNums();
-                Numbers++;
-                g.drawString(""+Numbers, coorX, coorY);
+
+        if (this.coordenada.x == this.coorX || this.coordenada.y == this.coorY
+                || this.coordenada.x + 1 == this.coorX || this.coordenada.x + 1 == this.coorX
+                || this.coordenada.x - 1 == this.coorX || this.coordenada.x - 1 == this.coorX
+                || this.coordenada.x + 2 == this.coorX || this.coordenada.x + 2 == this.coorX
+                || this.coordenada.x - 2 == this.coorX || this.coordenada.x - 2 == this.coorX
+                || this.coordenada.x + 3 == this.coorX || this.coordenada.x + 3 == this.coorX
+                || this.coordenada.x - 3 == this.coorX || this.coordenada.x - 3 == this.coorX
+                || this.coordenada.x + 4 == this.coorX || this.coordenada.x + 4 == this.coorX
+                || this.coordenada.x - 4 == this.coorX || this.coordenada.x - 4 == this.coorX
+                || this.coordenada.x + 5 == this.coorX || this.coordenada.x + 5 == this.coorX
+                || this.coordenada.x - 5 == this.coorX || this.coordenada.x - 5 == this.coorX) {
+            if (vidas > 0) {
+                if (Numbers <= 9) {
+                    CoorNums();
+                    Numbers++;
+                    g.drawString("" + Numbers, coorX, coorY);
+                    if (Numbers == 10) {
+                        terminarProceso();
+                    }
+                }
+            } else {
+                terminarProceso();
             }
-            else {
-                vidas = 0;
-            }
-            
+
         }
     }
 
@@ -169,17 +169,21 @@ public final class AreaMovimiento extends JPanel implements Runnable {
                 break;
             }
             repaint();
-        } while (getVidas() > 0);
-        Metodo();
+            if (vidas == 0) {
+                terminarProceso();
+            }
+        } while (this.inicio == false || vidas == 0);
+
+        //Metodo();
     }
-    
+
     public void Metodo() {
         CoorNums();
         this.coordenada.x = this.getSize().width / 2;
         this.coordenada.y = this.getSize().height / 2;
     }
-    
-    public void CoorNums(){
+
+    public void CoorNums() {
         coorX = Aleatorio();
         coorY = Aleatorio();
     }
@@ -187,6 +191,5 @@ public final class AreaMovimiento extends JPanel implements Runnable {
     public int Aleatorio() {
         return (-14 + (int) (Math.random() * 491));
     }
-    
-    
+
 }

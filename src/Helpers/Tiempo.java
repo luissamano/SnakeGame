@@ -9,6 +9,7 @@ package Helpers;
  *
  * @author marti
  */
+import POO.Vidas;
 import interfaces.AreaMovimiento;
 import interfaces.Principal;
 import java.io.IOException;
@@ -17,9 +18,11 @@ import java.util.TimerTask;
 
 public class Tiempo implements Runnable {
 
+    Vidas vidas = new Vidas();
     Thread tiempo = new Thread(this);
     AreaMovimiento am = new AreaMovimiento();
-    public int segundos = 62;
+
+    public int segundos = 100;
     int velocidad = 1000;
     Principal p;
 
@@ -32,15 +35,17 @@ public class Tiempo implements Runnable {
         this.tiempo.start();
     }
     
+    public void terminarProceso() {
+        segundos = 0;
+    }
+
     @Override
     public void run() {
         do {
             segundos--;
             p.time.setText("" + segundos);
             if (segundos == 0) {
-                am.setVidas(0);
-                p.lives.setText(""+0);
-                break;
+                am.terminarProceso();
             }
             try {
                 this.tiempo.sleep(this.velocidad);
